@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Transactions | StockWise{% endblock %}{% block page_heading %}Stock transactions{% endblock %}
+{% block content %}
+<section class="welcome-row"><div><h2>Movement history</h2><p>Every stock-in and stock-out action is recorded here.</p></div><a class="button primary" href="{{ url_for('transaction_add') }}">＋ Record movement</a></section>
+<section class="panel"><div class="table-tools"><input id="tableSearch" type="search" placeholder="Search transaction, product, or SKU..."><span class="muted">{{ transactions|length }} records</span></div>
+{% if transactions %}<div class="table-wrap"><table id="searchTable"><thead><tr><th>ID</th><th>Date</th><th>Product</th><th>Type</th><th>Quantity</th><th>Supplier</th><th>Notes</th></tr></thead><tbody>{% for t in transactions %}<tr><td>#{{ t.transaction_id }}</td><td>{{ t.transaction_date }}</td><td><strong>{{ t.product_name }}</strong><small class="subtext">{{ t.sku }}</small></td><td><span class="type-badge {{ 'in' if t.transaction_type in ['IN','ADJUSTMENT_IN'] else 'out' }}">{{ t.transaction_type }}</span></td><td>{{ t.quantity }}</td><td>{{ t.supplier_name or '—' }}</td><td>{{ t.notes or '—' }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><div class="empty-icon">⇄</div><h3>No transactions recorded</h3><p>Once you record movements, they will appear in this audit trail.</p><a class="button primary" href="{{ url_for('transaction_add') }}">Record first movement</a></div>{% endif %}</section>
+{% endblock %}

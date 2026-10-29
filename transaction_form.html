@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Record movement | StockWise{% endblock %}{% block page_heading %}Record stock movement{% endblock %}
+{% block content %}
+<section class="form-panel"><div class="form-intro"><span class="mini-tag">INVENTORY MOVEMENT</span><h2>Record stock in or stock out</h2><p>Stock-out requests are checked against current stock before saving.</p></div>
+{% if not products %}<div class="flash error">Add a product before recording a stock transaction.</div><a class="button primary" href="{{ url_for('product_add') }}">Add product first</a>{% else %}
+<form method="post" class="form-grid">
+<label>Product *<select name="product_id" required><option value="">Select product</option>{% for p in products %}<option value="{{ p.product_id }}" {% if form.get('product_id','')|string == p.product_id|string %}selected{% endif %}>{{ p.product_name }} ({{ p.sku }}) · Current: {{ p.current_stock }}</option>{% endfor %}</select></label>
+<label>Movement type *<select name="transaction_type" required><option value="IN" {% if form.get('transaction_type') == 'IN' %}selected{% endif %}>Stock In (received)</option><option value="OUT" {% if form.get('transaction_type') == 'OUT' %}selected{% endif %}>Stock Out (issued)</option></select></label>
+<label>Quantity *<input type="number" name="quantity" min="1" required value="{{ form.get('quantity','1') }}"></label>
+<label>Supplier (optional)<select name="supplier_id"><option value="">No supplier selected</option>{% for s in suppliers %}<option value="{{ s.supplier_id }}" {% if form.get('supplier_id','')|string == s.supplier_id|string %}selected{% endif %}>{{ s.supplier_name }}</option>{% endfor %}</select></label>
+<label class="full-width">Notes (optional)<input name="notes" maxlength="255" value="{{ form.get('notes','') }}" placeholder="e.g. Received delivery note #104"></label>
+<div class="form-actions"><a class="button secondary" href="{{ url_for('transactions') }}">Cancel</a><button class="button primary" type="submit">Save transaction</button></div>
+</form>{% endif %}</section>
+{% endblock %}

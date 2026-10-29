@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Products | StockWise{% endblock %}{% block page_heading %}Products{% endblock %}
+{% block content %}
+<section class="welcome-row"><div><h2>Product catalogue</h2><p>Manage items, opening stock, costs, and reorder thresholds.</p></div><a class="button primary" href="{{ url_for('product_add') }}">＋ Add product</a></section>
+<section class="panel"><div class="table-tools"><input id="tableSearch" type="search" placeholder="Search products or SKU..."><span class="muted">{{ products|length }} products</span></div>
+{% if products %}<div class="table-wrap"><table id="searchTable"><thead><tr><th>Product</th><th>Category</th><th>Opening stock</th><th>Current stock</th><th>Reorder level</th><th>Unit cost</th><th>Stock value</th><th></th></tr></thead><tbody>
+{% for p in products %}<tr><td><strong>{{ p.product_name }}</strong><small class="subtext">{{ p.sku }}</small></td><td>{{ p.category }}</td><td>{{ p.opening_stock }}</td><td><span class="{{ 'low-number' if p.current_stock <= p.reorder_level else '' }}">{{ p.current_stock }}</span>{% if p.current_stock <= p.reorder_level %}<span class="low-label">Low</span>{% endif %}</td><td>{{ p.reorder_level }}</td><td>₹{{ "%.2f"|format(p.unit_cost) }}</td><td>₹{{ "%.2f"|format(p.current_stock * p.unit_cost) }}</td><td><a class="text-link" href="{{ url_for('product_edit', product_id=p.product_id) }}">Edit</a></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<div class="empty-state"><div class="empty-icon">▤</div><h3>No products added</h3><p>Create your first product to begin tracking inventory.</p><a class="button primary" href="{{ url_for('product_add') }}">Add first product</a></div>{% endif %}</section>
+{% endblock %}

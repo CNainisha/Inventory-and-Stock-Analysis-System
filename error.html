@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block title %}Application notice | StockWise{% endblock %}{% block page_heading %}Application notice{% endblock %}
+{% block content %}<section class="form-panel narrow"><div class="empty-icon">!</div><h2>We couldn't complete that request.</h2><p>{{ message }}</p>{% if details %}<details><summary>Technical details</summary><pre>{{ details }}</pre></details>{% endif %}<a class="button primary" href="{{ url_for('dashboard') }}">Back to dashboard</a></section>{% endblock %}

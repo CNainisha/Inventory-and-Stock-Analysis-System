@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Suppliers | StockWise{% endblock %}{% block page_heading %}Suppliers{% endblock %}
+{% block content %}
+<section class="welcome-row"><div><h2>Supplier directory</h2><p>Keep supplier details available for incoming stock records.</p></div><a class="button primary" href="{{ url_for('supplier_add') }}">＋ Add supplier</a></section>
+<section class="panel">{% if suppliers %}<div class="table-wrap"><table><thead><tr><th>Supplier</th><th>Phone</th><th>Email</th><th>Added</th></tr></thead><tbody>{% for s in suppliers %}<tr><td><strong>{{ s.supplier_name }}</strong></td><td>{{ s.phone or '—' }}</td><td>{{ s.email or '—' }}</td><td>{{ s.created_at }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><div class="empty-icon">♙</div><h3>No suppliers yet</h3><p>Add a supplier to link it to stock-in transactions.</p><a class="button primary" href="{{ url_for('supplier_add') }}">Add supplier</a></div>{% endif %}</section>
+{% endblock %}

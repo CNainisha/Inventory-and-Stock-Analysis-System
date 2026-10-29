@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | StockWise{% endblock %}
+{% block page_heading %}Dashboard{% endblock %}
+{% block content %}
+<section class="welcome-row"><div><h2>Your inventory, at a glance.</h2><p>Monitor stock health and movement from one place.</p></div><a class="button primary" href="{{ url_for('transaction_add') }}">＋ Record movement</a></section>
+<section class="stat-grid">
+  <article class="stat-card"><div class="stat-label">Total products</div><div class="stat-value">{{ data.product_count }}</div><div class="stat-foot">Unique products tracked</div></article>
+  <article class="stat-card"><div class="stat-label">Units in stock</div><div class="stat-value">{{ data.total_units }}</div><div class="stat-foot">Opening stock + movements</div></article>
+  <article class="stat-card warning-card"><div class="stat-label">Low-stock items</div><div class="stat-value">{{ data.low_stock_count }}</div><div class="stat-foot">At or below reorder level</div></article>
+  <article class="stat-card"><div class="stat-label">Estimated stock value</div><div class="stat-value money">₹{{ "%.2f"|format(data.inventory_value) }}</div><div class="stat-foot">Current units × unit cost</div></article>
+</section>
+<section class="chart-grid">
+  <article class="panel"><div class="panel-heading"><div><h3>Current stock levels</h3><p>On-hand units by product</p></div><span class="mini-tag">STOCK</span></div><img class="chart-image" src="{{ url_for('static', filename='generated/stock_levels.png') }}?v={{ data.product_count }}" alt="Current stock levels chart"></article>
+  <article class="panel"><div class="panel-heading"><div><h3>Product movement</h3><p>Stock received compared with stock issued</p></div><span class="mini-tag">MOVEMENT</span></div><img class="chart-image" src="{{ url_for('static', filename='generated/product_movement.png') }}?v={{ data.product_count }}" alt="Product movement chart"></article>
+</section>
+<section class="panel">
+  <div class="panel-heading"><div><h3>Recent transactions</h3><p>Latest stock movements recorded</p></div><a class="text-link" href="{{ url_for('transactions') }}">View all →</a></div>
+  {% if data.recent_transactions %}
+  <div class="table-wrap"><table><thead><tr><th>Product</th><th>Date</th><th>Type</th><th>Quantity</th><th>Supplier</th></tr></thead><tbody>
+  {% for t in data.recent_transactions %}<tr><td><strong>{{ t.product_name }}</strong><small class="subtext">{{ t.sku }}</small></td><td>{{ t.transaction_date }}</td><td><span class="type-badge {{ 'in' if t.transaction_type in ['IN','ADJUSTMENT_IN'] else 'out' }}">{{ t.transaction_type }}</span></td><td>{{ t.quantity }}</td><td>{{ t.supplier_name or '—' }}</td></tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-state"><div class="empty-icon">⇄</div><h3>No movements yet</h3><p>Add a product, then record stock coming in or going out.</p><a class="button primary" href="{{ url_for('transaction_add') }}">Record first movement</a></div>{% endif %}
+</section>
+{% endblock %}

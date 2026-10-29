@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Add supplier | StockWise{% endblock %}{% block page_heading %}Add supplier{% endblock %}
+{% block content %}
+<section class="form-panel narrow"><div class="form-intro"><span class="mini-tag">SUPPLIER DETAILS</span><h2>New supplier</h2><p>Supplier name is required. Phone and email are optional.</p></div>
+<form method="post" class="form-stack">
+<label>Supplier name *<input name="supplier_name" required maxlength="150" value="{{ form.get('supplier_name','') }}" placeholder="e.g. Sri Supplies"></label>
+<label>Phone number<input name="phone" maxlength="30" value="{{ form.get('phone','') }}" placeholder="Contact number"></label>
+<label>Email address<input type="email" name="email" maxlength="150" value="{{ form.get('email','') }}" placeholder="supplier@example.com"></label>
+<div class="form-actions"><a class="button secondary" href="{{ url_for('suppliers') }}">Cancel</a><button class="button primary">Save supplier</button></div>
+</form></section>
+{% endblock %}

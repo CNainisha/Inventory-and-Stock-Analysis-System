@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if product else 'Add' }} product | StockWise{% endblock %}{% block page_heading %}{{ 'Edit product' if product else 'Add product' }}{% endblock %}
+{% block content %}
+<section class="form-panel"><div class="form-intro"><span class="mini-tag">PRODUCT DETAILS</span><h2>{{ 'Update product information' if product else 'Add to your catalogue' }}</h2><p>Fields marked * are required. Use opening stock for the starting quantity before transactions.</p></div>
+<form method="post" class="form-grid">
+  <label>SKU / Product code *<input name="sku" required maxlength="60" value="{{ form.get('sku', product.sku if product else '') }}" placeholder="e.g. SKU-001"></label>
+  <label>Product name *<input name="product_name" required maxlength="180" value="{{ form.get('product_name', product.product_name if product else '') }}" placeholder="e.g. A4 Notebook"></label>
+  <label>Category *<input name="category" required maxlength="100" value="{{ form.get('category', product.category if product else '') }}" placeholder="e.g. Stationery"></label>
+  <label>Opening stock *<input type="number" name="opening_stock" min="0" required value="{{ form.get('opening_stock', product.opening_stock if product else '0') }}"></label>
+  <label>Reorder level *<input type="number" name="reorder_level" min="0" required value="{{ form.get('reorder_level', product.reorder_level if product else '10') }}"></label>
+  <label>Unit cost (₹) *<input type="number" name="unit_cost" min="0" step="0.01" required value="{{ form.get('unit_cost', product.unit_cost if product else '0.00') }}"></label>
+  <div class="form-actions"><a class="button secondary" href="{{ url_for('products') }}">Cancel</a><button class="button primary" type="submit">{{ 'Save changes' if product else 'Add product' }}</button></div>
+</form></section>
+{% endblock %}
